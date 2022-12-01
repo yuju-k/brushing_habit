@@ -9,7 +9,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Brushing_habit_DTx',
-      theme: ThemeData.dark(),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('유아양치습관형성 DTx'),
@@ -19,11 +18,16 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                color: Colors.black,
+                //둥근모서리
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.all(15.0),
                 child: const HomeMenu(),
               ),
+              const SizedBox(height: 10),
               Container(
-                color: Colors.black,
+                color: Colors.white10,
                 child: const QuestionBrushing(),
               ),
             ],
@@ -40,52 +44,16 @@ class HomeMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            color: Colors.black,
-            child: const Text(
-              '메뉴',
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Container(
-            color: Colors.black,
-            child: const Text(
-              '퍼즐보상모음',
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Container(
-            color: Colors.black,
-            child: const Text(
-              '영상보상모음',
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Container(
-            color: Colors.black,
-            child: const Text(
-              '달성표',
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+        child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+            width: 100,
+            height: 100,
+            child: ElevatedButton.icon(
+                onPressed: onPressed, icon: icon, label: label)),
+      ],
+    ));
   }
 }
 
