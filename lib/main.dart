@@ -12,8 +12,9 @@ class RunHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Brushing habit',
+      title: 'Brushing habit DTX',
       home: const HomeScreen(),
+      theme: ThemeData.light(),
     );
   }
 }
