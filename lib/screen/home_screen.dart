@@ -124,10 +124,12 @@ class CollectionMenu extends StatelessWidget {
                 children: [
                   //Container 내부 내용
                   const Text('양치를 했나요?'),
+                  //네, 아니오 버튼
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
+                          //네 버튼
                           //버튼스타일 흰 배경에 파란색 테두리
                           style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.blue,
@@ -152,16 +154,19 @@ class CollectionMenu extends StatelessWidget {
                         width: 10,
                       ),
                       ElevatedButton(
+                          //아니오 버튼
                           style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.blue,
                               backgroundColor: Colors.white,
                               side: const BorderSide(
                                   color: Color.fromARGB(255, 142, 192, 233))),
                           onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, '/', (_) => false);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const RunBrushing()),
+                                  builder: (context) => ImageLabelView()),
                             );
                           },
                           child: const Text(
