@@ -166,7 +166,7 @@ class CollectionMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ImageLabelView()),
+                                  builder: (context) => const ImageLabelView()),
                             );
                           },
                           child: const Text(

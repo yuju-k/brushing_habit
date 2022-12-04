@@ -7,18 +7,28 @@ class PuzzleCollectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<String> images = [
+      'assets/puzzles/titles/pororo.png',
+      'assets/puzzles/titles/tayo.png',
+      'assets/puzzles/titles/baby_shark.png',
+      'assets/puzzles/titles/cocomong.png',
+    ];
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("퍼즐모음"),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            // 눌렀을 때 첫 번째 route로 되돌아 갑니다.
-          },
-          child: const Text('Go back!'),
+        appBar: AppBar(
+          title: const Text("퍼즐모음"),
         ),
-      ),
-    );
+        body: Center(
+            child: GridView.count(
+          mainAxisSpacing: 5,
+          crossAxisSpacing: 5,
+          crossAxisCount: 2,
+          children: List.generate(4, (index) {
+            // For each index in the list of images,
+            // return an Image widget that displays the image at that index
+            return Container(
+                color: Colors.white, child: Image.asset(images[index]));
+          }),
+        )));
   }
 }

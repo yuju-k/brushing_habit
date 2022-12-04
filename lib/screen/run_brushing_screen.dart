@@ -48,27 +48,10 @@ class _ImageLabelViewState extends State<ImageLabelView> {
   }
 
   void _initializeLabeler() async {
-    // uncomment next line if you want to use the default model
-    // _imageLabeler = ImageLabeler(options: ImageLabelerOptions());
-
-    // uncomment next lines if you want to use a local model
-    // make sure to add tflite model to assets/ml
-    // final path = 'assets/ml/lite-model_aiy_vision_classifier_birds_V1_3.tflite';
-    //const path = 'assets/ml/object_labeler.tflite';
     const path = 'assets/ml/model.tflite';
     final modelPath = await _getModel(path);
     final options = LocalLabelerOptions(modelPath: modelPath);
     _imageLabeler = ImageLabeler(options: options);
-
-    // uncomment next lines if you want to use a remote model
-    // make sure to add model to firebase
-    // final modelName = 'bird-classifier';
-    // final response =
-    //     await FirebaseImageLabelerModelManager().downloadModel(modelName);
-    // print('Downloaded: $response');
-    // final options =
-    //     FirebaseLabelerOption(confidenceThreshold: 0.5, modelName: modelName);
-    // _imageLabeler = ImageLabeler(options: options);
 
     _canProcess = true;
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//'달성표' 화면
+//달성표!
 
 class GoalsScreen extends StatelessWidget {
   const GoalsScreen({super.key});

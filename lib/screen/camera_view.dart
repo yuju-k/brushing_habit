@@ -7,6 +7,7 @@ import 'package:google_mlkit_commons/google_mlkit_commons.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../main.dart';
+import 'brushing_clear.dart';
 
 enum ScreenMode { liveFeed, gallery }
 
@@ -153,26 +154,39 @@ class _CameraViewState extends State<CameraView> {
 
     //CameraPreview(_controller!)
     //if (widget.customPaint != null) widget.customPaint!,
-    return Container(
-      height: size.height * 0.9,
-      color: Colors.black,
-      child: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Transform.scale(
-            scale: scale,
-            child: Center(
-              child: _changingCameraLens
-                  ? Center(
-                      child: const Text('Changing camera lens'),
-                    )
-                  : CameraPreview(_controller!),
-            ),
+    return Column(
+      children: [
+        Container(
+          height: size.height * 0.8,
+          color: Colors.black,
+          child: Stack(
+            fit: StackFit.expand,
+            children: <Widget>[
+              Transform.scale(
+                scale: scale,
+                child: Center(
+                  child: _changingCameraLens
+                      ? const Center(
+                          child: Text('Changing camera lens'),
+                        )
+                      : CameraPreview(_controller!),
+                ),
+              ),
+              if (widget.customPaint != null) widget.customPaint!,
+              //여기에 동영상 플레이어 넣기
+            ],
           ),
-          if (widget.customPaint != null) widget.customPaint!,
-          //여기에 동영상 플레이어 넣기
-        ],
-      ),
+        ),
+        ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ClearBrushing()),
+              );
+            },
+            child: const Text('양치질 완료')),
+      ],
     );
   }
 
@@ -190,21 +204,21 @@ class _CameraViewState extends State<CameraView> {
                 ],
               ),
             )
-          : Icon(
+          : const Icon(
               Icons.image,
               size: 200,
             ),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ElevatedButton(
-          child: Text('From Gallery'),
+          child: const Text('From Gallery'),
           onPressed: () => _getImage(ImageSource.gallery),
         ),
       ),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ElevatedButton(
-          child: Text('Take a picture'),
+          child: const Text('Take a picture'),
           onPressed: () => _getImage(ImageSource.camera),
         ),
       ),
