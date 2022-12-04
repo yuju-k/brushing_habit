@@ -151,7 +151,10 @@ class _CameraViewState extends State<CameraView> {
     // to prevent scaling down, invert the value
     if (scale < 1) scale = 1 / scale;
 
+    //CameraPreview(_controller!)
+    //if (widget.customPaint != null) widget.customPaint!,
     return Container(
+      height: size.height * 0.9,
       color: Colors.black,
       child: Stack(
         fit: StackFit.expand,
@@ -167,6 +170,7 @@ class _CameraViewState extends State<CameraView> {
             ),
           ),
           if (widget.customPaint != null) widget.customPaint!,
+          //여기에 동영상 플레이어 넣기
         ],
       ),
     );
