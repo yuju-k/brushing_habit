@@ -48,13 +48,17 @@ class _ImageLabelViewState extends State<ImageLabelView> {
   }
 
   void _initializeLabeler() async {
-    const path = 'assets/ml/model.tflite';
+    //const path = 'assets/ml/model.tflite';
+    const path = 'assets/ml/model_brushing.tflite';
     final modelPath = await _getModel(path);
     final options = LocalLabelerOptions(modelPath: modelPath);
     _imageLabeler = ImageLabeler(options: options);
 
     _canProcess = true;
   }
+
+  int goodCount = 0;
+  int goodSeconds = 0;
 
   Future<void> processImage(InputImage inputImage) async {
     if (!_canProcess) return;
@@ -77,6 +81,15 @@ class _ImageLabelViewState extends State<ImageLabelView> {
       _text = text;
       _customPaint = null;
     }
+
+    for (final label in labels) {
+      if (label.label == 'good') {
+        print('good : $goodSeconds seconds');
+        goodCount++;
+        goodSeconds = goodCount ~/ 100;
+      }
+    }
+
     _isBusy = false;
     if (mounted) {
       setState(() {});

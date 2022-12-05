@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_commons/google_mlkit_commons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../main.dart';
 import 'brushing_clear.dart';
@@ -152,41 +153,52 @@ class _CameraViewState extends State<CameraView> {
     // to prevent scaling down, invert the value
     if (scale < 1) scale = 1 / scale;
 
-    //CameraPreview(_controller!)
-    //if (widget.customPaint != null) widget.customPaint!,
-    return Column(
-      children: [
-        Container(
-          height: size.height * 0.8,
-          color: Colors.black,
-          child: Stack(
-            fit: StackFit.expand,
-            children: <Widget>[
-              Transform.scale(
-                scale: scale,
-                child: Center(
-                  child: _changingCameraLens
-                      ? const Center(
-                          child: Text('Changing camera lens'),
-                        )
-                      : CameraPreview(_controller!),
+    return Container(
+      color: Colors.black,
+      child: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Transform.scale(
+            scale: scale,
+            child: Center(
+              child: _changingCameraLens
+                  ? const Center(
+                      child: Text('Changing camera lens'),
+                    )
+                  : CameraPreview(_controller!),
+            ),
+          ),
+          if (widget.customPaint != null) widget.customPaint!,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: YoutubePlayer(
+              controller: YoutubePlayerController(
+                initialVideoId: 'Bw_Wj7sDEv8', // 유튜브 영상 ID
+                flags: const YoutubePlayerFlags(
+                  autoPlay: false, // 자동 재생
+                  mute: false, // 소리 켜기
                 ),
               ),
-              if (widget.customPaint != null) widget.customPaint!,
-              //여기에 동영상 플레이어 넣기
-            ],
+            ),
           ),
-        ),
-        ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ClearBrushing()),
-              );
-            },
-            child: const Text('양치질 완료')),
-      ],
+          Align(
+            //개발용 임시버튼
+            alignment: Alignment.bottomCenter,
+            child: ElevatedButton(
+              child: const Text("Next screen"),
+              onPressed: () {
+                // Navigate to the next screen here
+                Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ClearBrushing()),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 

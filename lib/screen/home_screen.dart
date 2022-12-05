@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'goals_screen.dart';
-import 'movies_collection_scrren.dart';
-import 'puzzle_collection_scrren.dart';
+import 'movies_collection_screen.dart';
+import 'puzzle_collection_screen.dart';
 import 'reward_movie_screen.dart';
 import 'run_brushing_screen.dart';
 
