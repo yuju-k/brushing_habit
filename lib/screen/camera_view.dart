@@ -185,22 +185,6 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
             alignment: Alignment.topCenter + const Alignment(0, 0.2),
             child: _processGood_2(),
           ),
-          Align(
-            //개발용 임시버튼
-            alignment: Alignment.bottomCenter,
-            child: ElevatedButton(
-              child: const Text("Next screen"),
-              onPressed: () {
-                // Navigate to the next screen here
-                Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ClearBrushing()),
-                );
-              },
-            ),
-          ),
         ],
       ),
     );
