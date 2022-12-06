@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mlkit_commons/google_mlkit_commons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:animated_background/animated_background.dart';
 
 import '../main.dart';
 import 'brushing_clear.dart';
@@ -23,6 +24,7 @@ class CameraView extends StatefulWidget {
     this.initialDirection = CameraLensDirection.front,
     required this.goodLevel,
     required this.badLevel,
+    required this.status,
   }) : super(key: key);
 
   final String title;
@@ -33,12 +35,13 @@ class CameraView extends StatefulWidget {
   final CameraLensDirection initialDirection;
   final int goodLevel;
   final int badLevel;
+  final String status;
 
   @override
   State<CameraView> createState() => _CameraViewState();
 }
 
-class _CameraViewState extends State<CameraView> {
+class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
   ScreenMode _mode = ScreenMode.liveFeed;
   CameraController? _controller;
   File? _image;
@@ -123,17 +126,15 @@ class _CameraViewState extends State<CameraView> {
   }
 
   Widget _liveFeedBody() {
+    String status = widget.status;
+    int goodLevel = widget.goodLevel;
+
     if (_controller?.value.isInitialized == false) {
       return Container();
     }
 
     final size = MediaQuery.of(context).size;
-    // calculate scale depending on screen and camera ratios
-    // this is actually size.aspectRatio / (1 / camera.aspectRatio)
-    // because camera preview size is received as landscape
-    // but we're calculating for portrait orientation
     var scale = size.aspectRatio * _controller!.value.aspectRatio;
-
     // to prevent scaling down, invert the value
     if (scale < 1) scale = 1 / scale;
 
@@ -152,9 +153,12 @@ class _CameraViewState extends State<CameraView> {
                   : CameraPreview(_controller!),
             ),
           ),
-          if (widget.customPaint != null) widget.customPaint!,
+          if (widget.customPaint != null)
+            widget.customPaint!, //Label, Confidence표시
+          if (status == 'good' && goodLevel <= 20)
+            _goodBackgroud20(), //good일때 배경
           Align(
-            alignment: Alignment.bottomCenter + const Alignment(0, -0.2),
+            alignment: Alignment.bottomCenter + const Alignment(0, -0.1),
             child: _youtubePlayer(),
           ),
           Align(
@@ -182,7 +186,17 @@ class _CameraViewState extends State<CameraView> {
     );
   }
 
+  Widget _goodBackgroud20() {
+    //goodLevel이 20이하일때 배경
+    return AnimatedBackground(
+      behaviour: BubblesBehaviour(),
+      vsync: this,
+      child: const SizedBox(),
+    );
+  }
+
   Widget _processGood() {
+    //goodLevel진행을 나타내는 ProgressIndicator
     int goodLevel = widget.goodLevel;
     return Container(
         padding: const EdgeInsets.only(left: 20, right: 20),
@@ -196,12 +210,15 @@ class _CameraViewState extends State<CameraView> {
 
   Widget _youtubePlayer() {
     //유튜브플레이어
-    return YoutubePlayer(
-      controller: YoutubePlayerController(
-        initialVideoId: 'Bw_Wj7sDEv8', // 유튜브 영상 ID
-        flags: const YoutubePlayerFlags(
-          autoPlay: false, // 자동 재생
-          mute: false, // 소리 켜기
+    return Container(
+      padding: const EdgeInsets.only(left: 15, right: 15),
+      child: YoutubePlayer(
+        controller: YoutubePlayerController(
+          initialVideoId: 'Bw_Wj7sDEv8', // 유튜브 영상 ID
+          flags: const YoutubePlayerFlags(
+            autoPlay: false, // 자동 재생
+            mute: false, // 소리 켜기
+          ),
         ),
       ),
     );

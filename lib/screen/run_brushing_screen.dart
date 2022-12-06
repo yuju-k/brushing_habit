@@ -27,6 +27,7 @@ class _ImageLabelViewState extends State<ImageLabelView> {
   int _badCount = 0;
   int _goodLevel = 0;
   int _badLevel = 0;
+  String _status = 'none';
 
   @override
   void initState() {
@@ -51,11 +52,11 @@ class _ImageLabelViewState extends State<ImageLabelView> {
       onImage: processImage,
       goodLevel: _goodLevel,
       badLevel: _badLevel,
+      status: _status,
     );
   }
 
   void _initializeLabeler() async {
-    //const path = 'assets/ml/model.tflite';
     const path = 'assets/ml/model_brushing.tflite';
     final modelPath = await _getModel(path);
     final options = LocalLabelerOptions(modelPath: modelPath);
@@ -65,16 +66,20 @@ class _ImageLabelViewState extends State<ImageLabelView> {
   }
 
   void _incrementCounts(List labels) {
+    //'good'일때 'bad'일때 카운트해서 30으로 나눈값을 goodLevel, badLevel에 저장
+    //goodLevel과 badLevel을 camera_view.dart로 보내서 화면에 표시
     for (final label in labels) {
       if (label.label == 'good') {
         _goodCount += 1;
         _goodLevel = _goodCount ~/ 30;
         _badCount = 0;
-        print('good: $_goodLevel');
+        _status = 'good';
+        //print('good: $_goodLevel');
       } else if (label.label == 'bad') {
         _badCount += 1;
         _badLevel = _badCount ~/ 30;
-        print('bad: $_badLevel');
+        _status = 'bad';
+        //print('bad: $_badLevel');
       }
     }
   }
