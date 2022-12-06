@@ -1,4 +1,5 @@
 import 'dart:io' as io;
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,10 @@ class _ImageLabelViewState extends State<ImageLabelView> {
   bool _isBusy = false;
   CustomPaint? _customPaint;
   String? _text;
+  int _goodCount = 0;
+  int _badCount = 0;
+  int _goodLevel = 0;
+  int _badLevel = 0;
 
   @override
   void initState() {
@@ -44,6 +49,8 @@ class _ImageLabelViewState extends State<ImageLabelView> {
       customPaint: _customPaint,
       text: _text,
       onImage: processImage,
+      goodLevel: _goodLevel,
+      badLevel: _badLevel,
     );
   }
 
@@ -57,8 +64,20 @@ class _ImageLabelViewState extends State<ImageLabelView> {
     _canProcess = true;
   }
 
-  int goodCount = 0;
-  int goodSeconds = 0;
+  void _incrementCounts(List labels) {
+    for (final label in labels) {
+      if (label.label == 'good') {
+        _goodCount += 1;
+        _goodLevel = _goodCount ~/ 30;
+        _badCount = 0;
+        print('good: $_goodLevel');
+      } else if (label.label == 'bad') {
+        _badCount += 1;
+        _badLevel = _badCount ~/ 30;
+        print('bad: $_badLevel');
+      }
+    }
+  }
 
   Future<void> processImage(InputImage inputImage) async {
     if (!_canProcess) return;
@@ -68,6 +87,7 @@ class _ImageLabelViewState extends State<ImageLabelView> {
       _text = '';
     });
     final labels = await _imageLabeler.processImage(inputImage);
+
     if (inputImage.inputImageData?.size != null &&
         inputImage.inputImageData?.imageRotation != null) {
       final painter = LabelDetectorPainter(labels);
@@ -82,13 +102,7 @@ class _ImageLabelViewState extends State<ImageLabelView> {
       _customPaint = null;
     }
 
-    for (final label in labels) {
-      if (label.label == 'good') {
-        print('good : $goodSeconds seconds');
-        goodCount++;
-        goodSeconds = goodCount ~/ 100;
-      }
-    }
+    _incrementCounts(labels);
 
     _isBusy = false;
     if (mounted) {

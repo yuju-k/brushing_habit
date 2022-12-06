@@ -13,15 +13,17 @@ import 'brushing_clear.dart';
 enum ScreenMode { liveFeed, gallery }
 
 class CameraView extends StatefulWidget {
-  const CameraView(
-      {Key? key,
-      required this.title,
-      required this.customPaint,
-      this.text,
-      required this.onImage,
-      this.onScreenModeChanged,
-      this.initialDirection = CameraLensDirection.back})
-      : super(key: key);
+  const CameraView({
+    Key? key,
+    required this.title,
+    required this.customPaint,
+    this.text,
+    required this.onImage,
+    this.onScreenModeChanged,
+    this.initialDirection = CameraLensDirection.front,
+    required this.goodLevel,
+    required this.badLevel,
+  }) : super(key: key);
 
   final String title;
   final CustomPaint? customPaint;
@@ -29,6 +31,8 @@ class CameraView extends StatefulWidget {
   final Function(InputImage inputImage) onImage;
   final Function(ScreenMode mode)? onScreenModeChanged;
   final CameraLensDirection initialDirection;
+  final int goodLevel;
+  final int badLevel;
 
   @override
   State<CameraView> createState() => _CameraViewState();
@@ -48,7 +52,6 @@ class _CameraViewState extends State<CameraView> {
   @override
   void initState() {
     super.initState();
-
     _imagePicker = ImagePicker();
 
     if (cameras.any(
@@ -92,40 +95,21 @@ class _CameraViewState extends State<CameraView> {
           if (_allowPicker)
             Padding(
               padding: const EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: _switchScreenMode,
+              child: //카메라전환
+                  GestureDetector(
+                onTap: _switchLiveCamera,
                 child: Icon(
-                  _mode == ScreenMode.liveFeed
-                      ? Icons.photo_library_outlined
-                      : (Platform.isIOS
-                          ? Icons.camera_alt_outlined
-                          : Icons.camera),
+                  Platform.isIOS
+                      ? Icons.flip_camera_ios_outlined
+                      : Icons.flip_camera_android_outlined,
+                  size: 30,
                 ),
               ),
             ),
         ],
       ),
       body: _body(),
-      floatingActionButton: _floatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
-
-  Widget? _floatingActionButton() {
-    if (_mode == ScreenMode.gallery) return null;
-    if (cameras.length == 1) return null;
-    return SizedBox(
-        height: 70.0,
-        width: 70.0,
-        child: FloatingActionButton(
-          onPressed: _switchLiveCamera,
-          child: Icon(
-            Platform.isIOS
-                ? Icons.flip_camera_ios_outlined
-                : Icons.flip_camera_android_outlined,
-            size: 40,
-          ),
-        ));
   }
 
   Widget _body() {
@@ -170,16 +154,12 @@ class _CameraViewState extends State<CameraView> {
           ),
           if (widget.customPaint != null) widget.customPaint!,
           Align(
-            alignment: Alignment.bottomCenter,
-            child: YoutubePlayer(
-              controller: YoutubePlayerController(
-                initialVideoId: 'Bw_Wj7sDEv8', // 유튜브 영상 ID
-                flags: const YoutubePlayerFlags(
-                  autoPlay: false, // 자동 재생
-                  mute: false, // 소리 켜기
-                ),
-              ),
-            ),
+            alignment: Alignment.bottomCenter + const Alignment(0, -0.2),
+            child: _youtubePlayer(),
+          ),
+          Align(
+            alignment: Alignment.topCenter + const Alignment(0, 0.1),
+            child: _processGood(),
           ),
           Align(
             //개발용 임시버튼
@@ -198,6 +178,31 @@ class _CameraViewState extends State<CameraView> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _processGood() {
+    int goodLevel = widget.goodLevel;
+    return Container(
+        padding: const EdgeInsets.only(left: 20, right: 20),
+        child: LinearProgressIndicator(
+          minHeight: 25,
+          value: goodLevel / 120,
+          backgroundColor: Colors.white54,
+          valueColor: const AlwaysStoppedAnimation<Color>(Colors.yellow),
+        ));
+  }
+
+  Widget _youtubePlayer() {
+    //유튜브플레이어
+    return YoutubePlayer(
+      controller: YoutubePlayerController(
+        initialVideoId: 'Bw_Wj7sDEv8', // 유튜브 영상 ID
+        flags: const YoutubePlayerFlags(
+          autoPlay: false, // 자동 재생
+          mute: false, // 소리 켜기
+        ),
       ),
     );
   }
@@ -251,21 +256,6 @@ class _CameraViewState extends State<CameraView> {
     final pickedFile = await _imagePicker?.pickImage(source: source);
     if (pickedFile != null) {
       _processPickedFile(pickedFile);
-    }
-    setState(() {});
-  }
-
-  void _switchScreenMode() {
-    _image = null;
-    if (_mode == ScreenMode.liveFeed) {
-      _mode = ScreenMode.gallery;
-      _stopLiveFeed();
-    } else {
-      _mode = ScreenMode.liveFeed;
-      _startLiveFeed();
-    }
-    if (widget.onScreenModeChanged != null) {
-      widget.onScreenModeChanged!(_mode);
     }
     setState(() {});
   }
