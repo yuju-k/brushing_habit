@@ -27,6 +27,7 @@ class _ImageLabelViewState extends State<ImageLabelView> {
   int _badCount = 0;
   int _goodLevel = 0;
   int _badLevel = 0;
+  int _goodCount2 = 0;
   String _status = 'none';
 
   @override
@@ -50,6 +51,7 @@ class _ImageLabelViewState extends State<ImageLabelView> {
       customPaint: _customPaint,
       text: _text,
       onImage: processImage,
+      goodCount2: _goodCount2,
       goodLevel: _goodLevel,
       badLevel: _badLevel,
       status: _status,
@@ -71,13 +73,15 @@ class _ImageLabelViewState extends State<ImageLabelView> {
     for (final label in labels) {
       if (label.label == 'good') {
         _goodCount += 1;
-        _goodLevel = _goodCount ~/ 30;
+        _goodLevel = _goodCount ~/ 10;
+        _goodCount2 += 1;
+        if (_goodCount2 == 11) _goodCount2 = 0;
         _badCount = 0;
         _status = 'good';
         //print('good: $_goodLevel');
       } else if (label.label == 'bad') {
         _badCount += 1;
-        _badLevel = _badCount ~/ 30;
+        _badLevel = _badCount ~/ 10;
         _status = 'bad';
         //print('bad: $_badLevel');
       }

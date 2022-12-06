@@ -25,6 +25,7 @@ class CameraView extends StatefulWidget {
     required this.goodLevel,
     required this.badLevel,
     required this.status,
+    required this.goodCount2,
   }) : super(key: key);
 
   final String title;
@@ -33,6 +34,7 @@ class CameraView extends StatefulWidget {
   final Function(InputImage inputImage) onImage;
   final Function(ScreenMode mode)? onScreenModeChanged;
   final CameraLensDirection initialDirection;
+  final int goodCount2;
   final int goodLevel;
   final int badLevel;
   final String status;
@@ -129,6 +131,17 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
     String status = widget.status;
     int goodLevel = widget.goodLevel;
 
+    // _goodLevel이 120이 되면 3초 뒤에 ClearBrushing() 화면으로 넘어감
+    if (goodLevel / 120 == 1) {
+      Future.delayed(const Duration(seconds: 3), () {
+        Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ClearBrushing()),
+        );
+      });
+    }
+
     if (_controller?.value.isInitialized == false) {
       return Container();
     }
@@ -156,7 +169,10 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
           if (widget.customPaint != null)
             widget.customPaint!, //Label, Confidence표시
           if (status == 'good' && goodLevel <= 20)
-            _goodBackgroud20(), //good일때 배경
+            _goodBackground20(), //good일때 배경
+          if (status == 'good' && goodLevel > 20 && goodLevel <= 50)
+            _goodBackground50(),
+          if (status == 'good' && goodLevel > 50) _goodBackground100(),
           Align(
             alignment: Alignment.bottomCenter + const Alignment(0, -0.1),
             child: _youtubePlayer(),
@@ -164,6 +180,10 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
           Align(
             alignment: Alignment.topCenter + const Alignment(0, 0.1),
             child: _processGood(),
+          ),
+          Align(
+            alignment: Alignment.topCenter + const Alignment(0, 0.2),
+            child: _processGood_2(),
           ),
           Align(
             //개발용 임시버튼
@@ -186,8 +206,31 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
     );
   }
 
-  Widget _goodBackgroud20() {
+  Widget _goodBackground20() {
     //goodLevel이 20이하일때 배경
+    return AnimatedBackground(
+      behaviour: RandomParticleBehaviour(
+        options: const ParticleOptions(
+          baseColor: Colors.white,
+          spawnOpacity: 0.0,
+          opacityChangeRate: 0.25,
+          minOpacity: 0.1,
+          maxOpacity: 0.25,
+          spawnMinSpeed: 50.0,
+          spawnMaxSpeed: 100.0,
+          spawnMinRadius: 7.0,
+          spawnMaxRadius: 15.0,
+          particleCount: 50,
+        ),
+        paint: Paint()..style = PaintingStyle.fill,
+      ),
+      vsync: this,
+      child: const SizedBox(),
+    );
+  }
+
+  Widget _goodBackground50() {
+    //goodLevel이 50이하일때 배경
     return AnimatedBackground(
       behaviour: BubblesBehaviour(),
       vsync: this,
@@ -195,8 +238,23 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
     );
   }
 
+  Widget _goodBackground100() {
+    //goodLevel이 50이상일때 배경, 하트이미지
+    return AnimatedBackground(
+      behaviour: RandomParticleBehaviour(
+        options: const ParticleOptions(
+          image: Image(
+            image: AssetImage('assets/images/heart.png'),
+          ),
+        ),
+      ),
+      vsync: this,
+      child: const SizedBox(),
+    );
+  }
+
   Widget _processGood() {
-    //goodLevel진행을 나타내는 ProgressIndicator
+    //goodLevel진행을 나타내는 ProgressIndicator, 120초
     int goodLevel = widget.goodLevel;
     return Container(
         padding: const EdgeInsets.only(left: 20, right: 20),
@@ -208,6 +266,20 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
         ));
   }
 
+  Widget _processGood_2() {
+    //goodLevel진행을 나타내는 ProgressIndicator, 짧은버전. 10초
+    int goodCount2 = widget.goodCount2;
+    return Container(
+        padding: const EdgeInsets.only(left: 35, right: 35),
+        child: LinearProgressIndicator(
+          minHeight: 8,
+          value: goodCount2 / 10,
+          backgroundColor: Colors.white54,
+          valueColor: const AlwaysStoppedAnimation<Color>(
+              Color.fromARGB(255, 255, 136, 0)),
+        ));
+  }
+
   Widget _youtubePlayer() {
     //유튜브플레이어
     return Container(
@@ -216,7 +288,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
         controller: YoutubePlayerController(
           initialVideoId: 'Bw_Wj7sDEv8', // 유튜브 영상 ID
           flags: const YoutubePlayerFlags(
-            autoPlay: false, // 자동 재생
+            autoPlay: true, // 자동 재생
             mute: false, // 소리 켜기
           ),
         ),
