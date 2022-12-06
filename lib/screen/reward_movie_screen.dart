@@ -20,15 +20,7 @@ class _RewardMovieState extends State<RewardMovie> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              YoutubePlayer(
-                controller: YoutubePlayerController(
-                  initialVideoId: 'gAVsLi3Nrd0', // 유튜브 영상 ID
-                  flags: const YoutubePlayerFlags(
-                    autoPlay: true, // 자동 재생
-                    mute: false, // 소리 켜기
-                  ),
-                ),
-              ),
+              youtubePlaying(),
               const SizedBox(
                 height: 20,
               ),
@@ -48,4 +40,16 @@ class _RewardMovieState extends State<RewardMovie> {
           ))),
     );
   }
+}
+
+Widget youtubePlaying() {
+  return YoutubePlayer(
+    controller: YoutubePlayerController(
+      initialVideoId: 'gAVsLi3Nrd0', // 유튜브 영상 ID
+      flags: const YoutubePlayerFlags(
+        autoPlay: true, // 자동 재생
+        mute: false, // 소리 켜기
+      ),
+    ),
+  );
 }
