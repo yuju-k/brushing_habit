@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "971286786724",
+    "project_id": "brushing-habit",
+    "storage_bucket": "brushing-habit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971286786724:android:d850e1085ef6df351dac31",
+        "android_client_info": {
+          "package_name": "com.example.brushing_habit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "971286786724-foo8m77onojhq53skieu6aufpgkcksoh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOI5fbUWqSbhymtv-bq8kohIi5ggP0JVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "971286786724-foo8m77onojhq53skieu6aufpgkcksoh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
