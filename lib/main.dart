@@ -1,8 +1,10 @@
 import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'screen/home_screen.dart';
+import 'screen/sign_screen.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -26,7 +28,19 @@ class RunHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Brushing habit DTX',
-      home: const HomeScreen(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          // If the user is logged in, navigate to the HomeScreen
+          if (snapshot.hasData) {
+            return const HomeScreen();
+          }
+          // Otherwise, navigate to the SignScreen
+          else {
+            return const SignScreen();
+          }
+        },
+      ),
       theme: ThemeData.light(),
     );
   }

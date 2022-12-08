@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -10,6 +12,7 @@ class AuthService {
       User? user = result.user;
       return _userFromFirebaseUser(user!);
     } catch (e) {
+      // ignore: avoid_print
       print(e.toString());
       return null;
     }

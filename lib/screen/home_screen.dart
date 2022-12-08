@@ -5,6 +5,7 @@ import 'collection/movies_collection_screen.dart';
 import 'collection/puzzle_collection_screen.dart';
 import 'brushing/reward_movie_screen.dart';
 import 'brushing/run_brushing_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -178,7 +179,12 @@ class CollectionMenu extends StatelessWidget {
                     ],
                   )
                 ],
-              ))
+              )),
+          ElevatedButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+              },
+              child: const Text('로그아웃 테스트')),
         ]));
   }
 }
