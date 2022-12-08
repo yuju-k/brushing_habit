@@ -8,7 +8,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'camera_view.dart';
-import 'painters/label_detector_painter.dart';
+import '../painters/label_detector_painter.dart';
 
 class ImageLabelView extends StatefulWidget {
   const ImageLabelView({super.key});

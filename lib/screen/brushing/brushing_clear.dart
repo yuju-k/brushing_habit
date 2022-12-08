@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'reward_movie_screen.dart';
+import '../reward_movie_screen.dart';
 import 'dart:async';
 //양치질완료!
 

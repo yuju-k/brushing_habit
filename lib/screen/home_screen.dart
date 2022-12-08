@@ -4,7 +4,7 @@ import 'goals_screen.dart';
 import 'movies_collection_screen.dart';
 import 'puzzle_collection_screen.dart';
 import 'reward_movie_screen.dart';
-import 'run_brushing_screen.dart';
+import 'brushing/run_brushing_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

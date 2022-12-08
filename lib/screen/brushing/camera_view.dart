@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:animated_background/animated_background.dart';
 
-import '../main.dart';
+import '../../main.dart';
 import 'brushing_clear.dart';
 
 enum ScreenMode { liveFeed, gallery }
