@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
+<<<<<<< HEAD
 import 'goals_screen.dart';
 import 'movies_collection_screen.dart';
 import 'puzzle_collection_screen.dart';
 import 'reward_movie_screen.dart';
+=======
+import 'collection/goals_screen.dart';
+import 'collection/movies_collection_screen.dart';
+import 'collection/puzzle_collection_screen.dart';
+import 'brushing/reward_movie_screen.dart';
+>>>>>>> 5a38817 (폴더정리)
 import 'brushing/run_brushing_screen.dart';
 
 class HomeScreen extends StatelessWidget {

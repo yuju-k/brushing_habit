@@ -1,4 +1,4 @@
-import 'package:brushing_habit/screen/goals_screen.dart';
+import '../collection/goals_screen.dart';
 import 'package:flutter/material.dart';
 
 class RewardPuzzle extends StatelessWidget {
