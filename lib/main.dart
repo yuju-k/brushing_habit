@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'screen/home_screen.dart';
-import 'services/auth.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -16,8 +15,6 @@ Future<void> main() async {
     //firebase초기화
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  await AuthService().signInAnon(); //익명로그인 활성화
 
   runApp(const RunHome());
 }
