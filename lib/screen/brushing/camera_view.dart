@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -119,7 +118,6 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
   }
 
   Widget _body() {
-    //body Widget
     Widget body;
     if (_mode == ScreenMode.liveFeed) {
       body = _liveFeedBody();

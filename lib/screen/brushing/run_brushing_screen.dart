@@ -68,10 +68,12 @@ class _ImageLabelViewState extends State<ImageLabelView> {
   }
 
   void _incrementCounts(List labels) {
+    //'good'일때 'bad'일때 카운트해서 5으로 나눈값을 goodLevel, badLevel에 저장
+    //goodLevel과 badLevel을 camera_view.dart로 보내서 화면에 표시
     for (final label in labels) {
       if (label.label == 'good') {
         _goodCount += 1;
-        _goodLevel = _goodCount ~/ 10;
+        _goodLevel = _goodCount ~/ 5;
         _goodCount2 += 1;
         if (_goodCount2 == 11) _goodCount2 = 0;
         _badCount = 0;
@@ -79,7 +81,7 @@ class _ImageLabelViewState extends State<ImageLabelView> {
         //print('good: $_goodLevel');
       } else if (label.label == 'bad') {
         _badCount += 1;
-        _badLevel = _badCount ~/ 10;
+        _badLevel = _badCount ~/ 5;
         _status = 'bad';
         //print('bad: $_badLevel');
       }
