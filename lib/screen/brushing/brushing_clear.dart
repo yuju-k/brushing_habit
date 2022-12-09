@@ -12,37 +12,13 @@ class ClearBrushing extends StatefulWidget {
 }
 
 class _ClearBrushingState extends State<ClearBrushing> {
-  int _remainingSeconds = 5;
-  late Timer _timer;
-
   @override
   void initState() {
     super.initState();
-
-    // Start the countdown
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _remainingSeconds--;
-      });
-
-      if (_remainingSeconds == 0) {
-        timer.cancel();
-
-        // Move the screen after 5 seconds
-        Future.delayed(const Duration(seconds: 5)).then((_) {
-          Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const RewardMovie()),
-          );
-        });
-      }
-    });
   }
 
   @override
   void dispose() {
-    _timer.cancel();
     super.dispose();
   }
 
@@ -66,7 +42,6 @@ class _ClearBrushingState extends State<ClearBrushing> {
             "양치질을 완료했습니다!",
             style: TextStyle(fontSize: 18),
           ),
-          Text('Remaining seconds: $_remainingSeconds'),
           const SizedBox(
             height: 10,
           ),
@@ -78,7 +53,7 @@ class _ClearBrushingState extends State<ClearBrushing> {
                 MaterialPageRoute(builder: (context) => const RewardMovie()),
               );
             },
-            child: const Text('Skip'),
+            child: const Text('보상받기'),
           ),
         ],
       )),

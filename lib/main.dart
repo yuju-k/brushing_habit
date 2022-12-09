@@ -5,19 +5,21 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'screen/home_screen.dart';
 import 'screen/sign_screen.dart';
+import 'screen/collection/goals_screen.dart';
+import 'screen/collection/movies_collection_screen.dart';
+import 'screen/collection/puzzle_collection_screen.dart';
+import 'screen/brushing/reward_movie_screen.dart';
+import 'screen/brushing/run_brushing_screen.dart';
 
 List<CameraDescription> cameras = [];
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   cameras = await availableCameras(); //카메라 초기화
-
   await Firebase.initializeApp(
     //firebase초기화
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   runApp(const RunHome());
 }
 
@@ -28,6 +30,13 @@ class RunHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Brushing habit DTX',
+      routes: {
+        '/puzzle': (context) => const PuzzleCollectionScreen(),
+        '/movie': (context) => const MoviesCollectionScreen(),
+        '/goals': (context) => const GoalsScreen(),
+        '/reward': (context) => const RewardMovie(),
+        '/run': (context) => const ImageLabelView(),
+      },
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {

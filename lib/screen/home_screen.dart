@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'collection/goals_screen.dart';
-import 'collection/movies_collection_screen.dart';
-import 'collection/puzzle_collection_screen.dart';
-import 'brushing/reward_movie_screen.dart';
-import 'brushing/run_brushing_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -37,12 +31,7 @@ class CollectionMenu extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const PuzzleCollectionScreen()),
-                      );
+                      Navigator.pushNamed(context, '/puzzle');
                     },
                     iconSize: 75,
                     icon: Image.asset(
@@ -64,12 +53,7 @@ class CollectionMenu extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const MoviesCollectionScreen()),
-                      );
+                      Navigator.pushNamed(context, '/movie');
                     },
                     iconSize: 75,
                     icon: Image.asset(
@@ -91,11 +75,7 @@ class CollectionMenu extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const GoalsScreen()),
-                      );
+                      Navigator.pushNamed(context, '/goals');
                     },
                     iconSize: 75,
                     icon: Image.asset(
@@ -138,11 +118,7 @@ class CollectionMenu extends StatelessWidget {
                               side: const BorderSide(
                                   color: Color.fromARGB(255, 142, 192, 233))),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const RewardMovie()),
-                            );
+                            Navigator.pushNamed(context, '/reward');
                           },
                           child: const Text(
                             '\u{1F603}네!',
@@ -162,13 +138,7 @@ class CollectionMenu extends StatelessWidget {
                               side: const BorderSide(
                                   color: Color.fromARGB(255, 142, 192, 233))),
                           onPressed: () {
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, '/', (_) => false);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const ImageLabelView()),
-                            );
+                            Navigator.pushNamed(context, '/run');
                           },
                           child: const Text(
                             '\u{1F613}아니요',
