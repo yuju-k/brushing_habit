@@ -27,7 +27,7 @@ class _RewardMovieState extends State<RewardMovie> {
               const Text('시즌1 : 1화 뽀로로를 소개합니다.'),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

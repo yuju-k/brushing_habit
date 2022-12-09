@@ -134,7 +134,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
     // _goodLevel이 120이 되면 3초 뒤에 ClearBrushing() 화면으로 넘어감
     if (goodLevel / 120 == 1) {
       Future.delayed(const Duration(seconds: 3), () {
-        Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+        Navigator.pop(context);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const ClearBrushing()),
@@ -174,17 +174,33 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
             _goodBackground50(),
           if (status == 'good' && goodLevel > 50) _goodBackground100(),
           Align(
+            //유튜브플레이어
             alignment: Alignment.bottomCenter + const Alignment(0, -0.1),
             child: _youtubePlayer(),
           ),
           Align(
+            //goodLevel표시 프로세스바
             alignment: Alignment.topCenter + const Alignment(0, 0.1),
             child: _processGood(),
           ),
           Align(
+            //goodLevel표시 프로세스바2
             alignment: Alignment.topCenter + const Alignment(0, 0.2),
             child: _processGood_2(),
           ),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ClearBrushing()),
+                  );
+                },
+                child: const Text('Clear Brushing'),
+              ))
         ],
       ),
     );
@@ -272,7 +288,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
         controller: YoutubePlayerController(
           initialVideoId: 'Bw_Wj7sDEv8', // 유튜브 영상 ID
           flags: const YoutubePlayerFlags(
-            autoPlay: true, // 자동 재생
+            autoPlay: false, // 자동 재생
             mute: false, // 소리 켜기
           ),
         ),

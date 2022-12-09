@@ -28,6 +28,7 @@ class RewardPuzzle extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const GoalsScreen()),

@@ -44,7 +44,7 @@ class _ClearBrushingState extends State<ClearBrushing> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const RewardMovie()),

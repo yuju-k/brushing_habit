@@ -27,7 +27,21 @@ class PuzzleCollectionScreen extends StatelessWidget {
             // For each index in the list of images,
             // return an Image widget that displays the image at that index
             return Container(
-                color: Colors.white, child: Image.asset(images[index]));
+                color: Colors.white,
+                child: ElevatedButton(
+                    //투명배경
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.transparent,
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                    ),
+                    onPressed: () {
+                      //PuzzleDetails로 이동
+                      Navigator.pushNamed(context, '/puzzle_detail'
+                          //arguments: images[index]);
+                          );
+                    },
+                    child: Image.asset(images[index])));
           }),
         )));
   }
