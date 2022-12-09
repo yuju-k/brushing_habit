@@ -39,7 +39,7 @@ class RunHome extends StatelessWidget {
         '/reward': (context) => const RewardMovie(),
         '/run': (context) => const ImageLabelView(),
         '/puzzle_detail': (context) => const PuzzleDetails(),
-        '/puzzle_game': (context) => const PuzzleGame(),
+        '/puzzle_game': (context) => PuzzleGame(),
       },
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
