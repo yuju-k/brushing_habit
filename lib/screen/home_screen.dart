@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -31,11 +30,11 @@ class HomeScreen extends StatelessWidget {
                 Icons.settings,
                 color: Colors.grey[850],
               ),
-              title: Text('Settings'),
+              title: const Text('Settings'),
               onTap: () {
                 Navigator.pushNamed(context, '/setting');
               },
-              trailing: Icon(Icons.arrow_right),
+              trailing: const Icon(Icons.arrow_right),
             ),
           ],
         ),
