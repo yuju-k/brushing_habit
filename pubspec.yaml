@@ -18,9 +18,10 @@ dependencies:
   path_provider: ^2.0.11
   path: ^1.8.2
   youtube_player_flutter: 
-  flutter_calendar_carousel:
   firebase_core: ^2.3.0
   firebase_auth: ^4.1.5
+  cloud_firestore: ^4.2.0
+  flutter_calendar_carousel: ^2.4.1
 
 dev_dependencies:
   flutter_test:

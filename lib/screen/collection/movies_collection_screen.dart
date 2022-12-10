@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'firebase_movie.dart';
 
 const List<Widget> animationName = <Widget>[
   Text('슈퍼구조대'),
@@ -24,6 +25,18 @@ class MoviesCollectionScreen extends StatefulWidget {
 }
 
 class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
+  @override
+  void initState() {
+    FirebaseMovie firebaseMovie = FirebaseMovie();
+    firebaseMovie.readMovies();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

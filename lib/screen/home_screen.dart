@@ -118,7 +118,7 @@ class CollectionMenu extends StatelessWidget {
                               side: const BorderSide(
                                   color: Color.fromARGB(255, 142, 192, 233))),
                           onPressed: () {
-                            Navigator.pushNamed(context, '/reward');
+                            Navigator.pushNamed(context, '/claer');
                           },
                           child: const Text(
                             '\u{1F603}네!',
