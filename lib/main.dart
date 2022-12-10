@@ -10,7 +10,6 @@ import 'screen/collection/movies_collection_screen.dart';
 import 'screen/collection/puzzle_collection_screen.dart';
 import 'screen/brushing/reward_movie_screen.dart';
 import 'screen/brushing/run_brushing_screen.dart';
-import 'screen/collection/puzzle_detail.dart';
 import 'screen/collection/puzzle_game.dart';
 import 'screen/brushing/brushing_clear.dart';
 
@@ -39,7 +38,6 @@ class RunHome extends StatelessWidget {
         '/goals': (context) => const GoalsScreen(),
         '/reward': (context) => const RewardMovie(),
         '/run': (context) => const ImageLabelView(),
-        '/puzzle_detail': (context) => const PuzzleDetails(),
         '/puzzle_game': (context) => const PuzzleGame(),
         '/claer': (context) => const ClearBrushing(),
       },

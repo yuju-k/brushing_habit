@@ -37,9 +37,10 @@ class PuzzleCollectionScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       //PuzzleDetails로 이동
-                      Navigator.pushNamed(context, '/puzzle_detail'
-                          //arguments: images[index]);
-                          );
+                      Navigator.pushNamed(
+                        context, '/puzzle_game',
+                        //arguments: images[index]);
+                      );
                     },
                     child: Image.asset(images[index])));
           }),

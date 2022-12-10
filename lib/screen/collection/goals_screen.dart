@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GoalsScreen extends StatefulWidget {
   const GoalsScreen({Key? key}) : super(key: key);
@@ -13,22 +15,66 @@ class GoalsScreen extends StatefulWidget {
 class _GoalsScreenState extends State<GoalsScreen> {
   DateTime now = DateTime.now();
   late DateTime _selectedDate;
-  DateTime _todayDate = DateTime.now();
+  DateTime clearDayDate = DateTime.now();
   EventList<Event> listEvents = EventList<Event>(events: {});
 
   @override
   void initState() {
+    final FirebaseAuth auth = FirebaseAuth.instance;
     _selectedDate = DateTime.now();
     //달력에 마크를 표시하는 메소드를 작성할때, 시간이 0시 0분 0초 0밀리초로 되어있어야함.
-    _todayDate = DateTime(now.year, now.month, now.day, 0, 0, 0, 0);
+    clearDayDate = DateTime(now.year, now.month, now.day, 0, 0, 0, 0);
+
+    final User? user = auth.currentUser;
+    final uid = user!.uid;
+    //goals_calendar 컬렉션에 uid가 있는지 확인
+    //있으면 goals_calendar 컬렉션, uid문서에 clear_day 필드 배열을 _todayDate로 불러오기
+    //없으면 print('값이 존재하지 않습니다');
+    FirebaseFirestore.instance
+        .collection('goals_calendar')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        FirebaseFirestore.instance
+            .collection('goals_calendar')
+            .doc(uid)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+          if (documentSnapshot.exists) {
+            List<dynamic> clearDay = documentSnapshot['clear_day'];
+            for (int i = 0; i < clearDay.length; i++) {
+              clearDayDate = clearDay[i].toDate();
+              DateTime clearDayDate2 = DateTime(clearDayDate.year,
+                  clearDayDate.month, clearDayDate.day, 0, 0, 0, 0);
+              listEvents.add(
+                  clearDayDate2,
+                  Event(
+                    date: clearDayDate2,
+                    title: '양치질 완료',
+                  ));
+            }
+          } else {
+            print('값이 존재하지 않습니다');
+          }
+        });
+      } else {
+        print('값이 존재하지 않습니다');
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Goals'),
+          title: const Text('달성표'),
         ),
         body: SingleChildScrollView(
             child: Center(
@@ -77,23 +123,6 @@ class _GoalsScreenState extends State<GoalsScreen> {
               ),
               const SizedBox(height: 20),
               const Icon(Icons.star_rounded),
-              ElevatedButton(
-                onPressed: () {
-                  // ignore: avoid_print
-                  print('Button pressed');
-                  //listEvents에 오늘 날짜를 추가함.
-                  setState(() {
-                    listEvents.add(
-                      _todayDate,
-                      Event(
-                        date: _todayDate,
-                        title: 'Complete Brusing',
-                      ),
-                    );
-                  });
-                },
-                child: const Text('Button'),
-              ),
             ],
           ),
         )));
