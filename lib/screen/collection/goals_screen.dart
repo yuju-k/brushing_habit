@@ -139,14 +139,19 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   AsyncSnapshot<DocumentSnapshot> snapshot) {
                 int count = 0;
                 if (snapshot.hasData) {
-                  List<dynamic> clearDay = snapshot.data!['clear_day'];
-                  for (int i = 0; i < clearDay.length; i++) {
-                    clearDayDate = clearDay[i].toDate();
-                    DateTime clearDayDate2 = DateTime(clearDayDate.year,
-                        clearDayDate.month, clearDayDate.day, 0, 0, 0, 0);
-                    if (clearDayDate2 == _selectedDate) {
-                      count++;
+                  try {
+                    List<dynamic> clearDay = snapshot.data!['clear_day'];
+                    for (int i = 0; i < clearDay.length; i++) {
+                      clearDayDate = clearDay[i].toDate();
+                      DateTime clearDayDate2 = DateTime(clearDayDate.year,
+                          clearDayDate.month, clearDayDate.day, 0, 0, 0, 0);
+                      if (clearDayDate2 == _selectedDate) {
+                        count++;
+                      }
                     }
+                  } catch (e) {
+                    // ignore: avoid_print
+                    print('값이 존재하지 않습니다. $e');
                   }
                 } else {
                   // ignore: avoid_print
