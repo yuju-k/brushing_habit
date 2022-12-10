@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-const List<Widget> animationName = <Widget>[
-  Text('슈퍼구조대'),
-  Text('Pea Pea World'),
-  Text('코코몽'),
-  Text('뽀로로와 친구들'),
-  Text('꼬마버스 타요'),
+const List<String> animationName = [
+  '슈퍼구조대',
+  'Pea Pea World',
+  '코코몽',
+  '뽀로로와 친구들',
+  '꼬마버스 타요',
 ];
 
 final List<bool> selectedanimationName = <bool>[
@@ -88,6 +88,7 @@ class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
                   for (int i = 0; i < selectedanimationName.length; i++) {
                     selectedanimationName[i] = i == index;
                   }
+                  print(animationName[index].toString());
                 });
               },
               selectedBorderColor: Colors.blue[700],
@@ -99,7 +100,13 @@ class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
                 minWidth: 100.0,
               ),
               isSelected: selectedanimationName,
-              children: animationName,
+              children: <Widget>[
+                for (int i = 0; i < animationName.length; i++)
+                  Container(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Text(animationName[i]),
+                  ),
+              ],
             ),
           )
         ],

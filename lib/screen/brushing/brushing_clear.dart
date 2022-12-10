@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,7 @@ class _ClearBrushingState extends State<ClearBrushing> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user!.uid; //Firebase에 저장된 유저아이디 불러오기
+    List<String> _docIds = []; // 컬렉션에 있는 모든 문서의 ID를 저장할 리스트
 
     return Scaffold(
       appBar: AppBar(
@@ -69,6 +72,30 @@ class _ClearBrushingState extends State<ClearBrushing> {
             },
             child: const Text('보상받기'),
           ),
+          ElevatedButton(
+            onPressed: () async {
+              //firebase에 저장된 movies컬렉션의 문서를 불러와서 랜덤하게 하나 선택해서 print()로 출력
+              // 컬렉션에 있는 모든 문서의 ID를 저장할 리스트
+              // "movies" 컬렉션에서 모든 문서를 읽고, 문서리스트를 _docIds에 저장
+              await FirebaseFirestore.instance
+                  .collection('movies')
+                  .get()
+                  .then((QuerySnapshot querySnapshot) {
+                for (var doc in querySnapshot.docs) {
+                  _docIds.add(doc.id);
+                }
+              });
+              // _docIds 리스트에서 랜덤하게 하나 선택
+              try {
+                var randomDocId = _docIds[Random().nextInt(_docIds.length)];
+                // 선택된 문서의 ID를 출력
+                print(randomDocId);
+              } catch (e) {
+                print(e);
+              }
+            },
+            child: const Text('Test'),
+          )
         ],
       )),
     );
