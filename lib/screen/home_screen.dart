@@ -7,7 +7,39 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('유아양치습관형성 DTx')),
+      //앱바 중앙에 타이틀
+      //오른쪽에 설정 아이콘 - 서랍메뉴
+      appBar: AppBar(title: const Text('유아양치습관형성 DTx'), centerTitle: true),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                '',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.settings,
+                color: Colors.grey[850],
+              ),
+              title: Text('Settings'),
+              onTap: () {
+                Navigator.pushNamed(context, '/setting');
+              },
+              trailing: Icon(Icons.arrow_right),
+            ),
+          ],
+        ),
+      ),
       body: const CollectionMenu(),
     );
   }
@@ -150,11 +182,6 @@ class CollectionMenu extends StatelessWidget {
                   )
                 ],
               )),
-          ElevatedButton(
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-              },
-              child: const Text('로그아웃 테스트')),
         ]));
   }
 }
