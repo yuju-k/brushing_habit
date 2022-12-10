@@ -9,7 +9,7 @@ class GoalsScreen extends StatefulWidget {
   const GoalsScreen({Key? key}) : super(key: key);
 
   @override
-  _GoalsScreenState createState() => _GoalsScreenState();
+  State<GoalsScreen> createState() => _GoalsScreenState();
 }
 
 class _GoalsScreenState extends State<GoalsScreen> {
@@ -20,6 +20,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
 
   @override
   void initState() {
+    super.initState();
     final FirebaseAuth auth = FirebaseAuth.instance;
     _selectedDate = DateTime.now();
     //달력에 마크를 표시하는 메소드를 작성할때, 시간이 0시 0분 0초 0밀리초로 되어있어야함.
@@ -53,6 +54,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     date: clearDayDate2,
                     title: '양치질 완료',
                   ));
+              setState(() {}); //완료됐을때, 화면을 다시 그려주기 위해 setState()를 사용함.
             }
           } else {
             print('값이 존재하지 않습니다');
@@ -62,7 +64,6 @@ class _GoalsScreenState extends State<GoalsScreen> {
         print('값이 존재하지 않습니다');
       }
     });
-    super.initState();
   }
 
   @override
