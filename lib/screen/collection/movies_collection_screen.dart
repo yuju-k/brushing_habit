@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 const List<String> animationName = [
   '슈퍼구조대',
@@ -24,6 +27,47 @@ class MoviesCollectionScreen extends StatefulWidget {
 }
 
 class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
+  List<String> _docIds = []; //getItems에서 가져온 movie값들을 저장할 리스트
+  List<String> _youtubeIds = []; //movies에서 가져온 youtube_id값들을 저장할 리스트
+  int ani_index = 0;
+
+  Future getMovies() async {
+    var firestore = FirebaseFirestore.instance;
+    //uid 가져오기
+    final User? user = FirebaseAuth.instance.currentUser;
+    final String uid = user!.uid;
+    //collection: getItems, document: uid, field: movie
+    //movie값을 _docIds에 저장
+    await firestore
+        .collection('getItems')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        _docIds = List.from(documentSnapshot['movie']);
+        _docIds.sort();
+        print(_docIds);
+      }
+    });
+    //print(_docIds);
+    //docIds에 저장된 값들을 이용해 영상 정보 가져오기
+    for (int i = 0; i < _docIds.length; i++) {
+      await firestore
+          .collection('movies')
+          .doc(_docIds[i])
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          if (documentSnapshot['name'] == animationName[ani_index]) {
+            print(_docIds[i] + ': ' + documentSnapshot['youtube_id']);
+            _youtubeIds.add(documentSnapshot['youtube_id']);
+          }
+        }
+      });
+    }
+    print(_youtubeIds);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -49,6 +93,13 @@ class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        //--test button
+        ElevatedButton(
+          onPressed: () async {
+            getMovies();
+          },
+          child: const Text('test'),
+        ),
         animationSelect(),
         const SizedBox(height: 10),
         finishedEpisode(),
@@ -88,7 +139,8 @@ class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
                   for (int i = 0; i < selectedanimationName.length; i++) {
                     selectedanimationName[i] = i == index;
                   }
-                  print(animationName[index].toString());
+                  print('Menu Select :' + animationName[index].toString());
+                  ani_index = index;
                 });
               },
               selectedBorderColor: Colors.blue[700],
@@ -137,26 +189,35 @@ class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
             const SizedBox(height: 10),
             Column(
               children: [
-                thumbnailYoutube(),
-                thumbnailYoutube(),
-                thumbnailYoutube(),
-                thumbnailYoutube(),
+                thumbnailYoutube(0),
               ],
             ),
           ],
         ));
   }
 
-  Widget thumbnailYoutube() {
+  Widget thumbnailYoutube(int index) {
+    String? videoId = _youtubeIds[index];
+    String thumbnailUrl = getThumbnail(videoId: videoId ?? "");
     return Column(children: [
       Container(
         width: 16 * 17.0,
         height: 9 * 17.0,
-        color: Colors.grey,
-        child: const Text('영상썸네일'),
+        color: Colors.black,
+        child: Image.network(thumbnailUrl),
       ),
       const Text('[시즌1] 1화 - 영상제목'),
       const SizedBox(height: 10),
     ]);
   }
+
+  String getThumbnail({
+    //유튜브썸네일 이미지가져오기
+    required String videoId,
+    String quality = ThumbnailQuality.standard,
+    bool webp = true,
+  }) =>
+      webp
+          ? 'https://i3.ytimg.com/vi_webp/$videoId/$quality.webp'
+          : 'https://i3.ytimg.com/vi/$videoId/$quality.jpg';
 }

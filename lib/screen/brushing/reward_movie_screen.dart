@@ -65,6 +65,7 @@ class _RewardMovieState extends State<RewardMovie> {
                     const SizedBox(height: 5),
                     ElevatedButton(
                         onPressed: () {
+                          Navigator.pop(context);
                           Navigator.push(
                               context,
                               MaterialPageRoute(

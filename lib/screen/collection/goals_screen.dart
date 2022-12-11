@@ -1,3 +1,4 @@
+import '../../main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
@@ -164,6 +165,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                     .toString();
 
                 return Column(children: [
+                  // clearDay.length 만큼 별 출력
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -183,9 +185,18 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  // clearDay.length 만큼 별 출력
                 ]);
-              })
+              }),
+          const SizedBox(height: 20),
+          ElevatedButton(
+              onPressed: () {
+                // 초기화면으로 이동
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RunHome()),
+                    (route) => false);
+              },
+              child: const Text('홈화면으로')),
         ]))));
   }
 }
