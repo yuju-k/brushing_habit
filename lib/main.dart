@@ -37,7 +37,6 @@ class RunHome extends StatelessWidget {
         '/puzzle': (context) => const PuzzleCollectionScreen(),
         '/movie': (context) => const MoviesCollectionScreen(),
         '/goals': (context) => const GoalsScreen(),
-        '/reward': (context) => const RewardMovie(),
         '/run': (context) => const ImageLabelView(),
         '/puzzle_game': (context) => const PuzzleGame(),
         '/claer': (context) => const ClearBrushing(),
