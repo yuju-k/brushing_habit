@@ -187,7 +187,7 @@ class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
       String? title = _title[index];
       String? season = _seasonNum[index];
       String? episode = _episodeNum[index];
-      String thumbnailUrl = getThumbnail(videoId: videoId ?? "");
+      String thumbnailUrl = getThumbnail(videoId: videoId);
       return Column(children: [
         Container(
           width: 16 * 17.0,

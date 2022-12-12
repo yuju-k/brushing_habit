@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 //퍼즐모음화면
 
-class PuzzleCollectionScreen extends StatelessWidget {
+class PuzzleCollectionScreen extends StatefulWidget {
   const PuzzleCollectionScreen({super.key});
+
+  @override
+  State<PuzzleCollectionScreen> createState() => _PuzzleCollectionScreenState();
+}
+
+class _PuzzleCollectionScreenState extends State<PuzzleCollectionScreen> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([]);
+  }
 
   @override
   Widget build(BuildContext context) {
     List<String> images = [
-      'assets/puzzles/titles/pororo.png',
-      'assets/puzzles/titles/tayo.png',
-      'assets/puzzles/titles/baby_shark.png',
-      'assets/puzzles/titles/cocomong.png',
+      'assets/puzzles/1/original.jpg',
+      'assets/puzzles/2/original.jpg',
+      'assets/puzzles/3/original.jpg',
+      'assets/puzzles/4/original.jpg',
     ];
 
     return Scaffold(
@@ -22,7 +34,7 @@ class PuzzleCollectionScreen extends StatelessWidget {
             child: GridView.count(
           mainAxisSpacing: 5,
           crossAxisSpacing: 5,
-          crossAxisCount: 2,
+          crossAxisCount: 1,
           children: List.generate(4, (index) {
             // For each index in the list of images,
             // return an Image widget that displays the image at that index
