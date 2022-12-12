@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'puzzle_game.dart';
 
 //퍼즐모음화면
 
@@ -100,15 +101,15 @@ class _PuzzleCollectionScreenState extends State<PuzzleCollectionScreen> {
                               ElevatedButton(
                                   onPressed: () {
                                     //puzzleGame()화면으로이동
-                                    Navigator.pushNamed(context, '/puzzleGame',
-                                        arguments: {
-                                          'puzzle_list_filename':
-                                              puzzle_list_filename[index],
-                                          'puzzle_list_folder':
-                                              puzzle_list_folder[index],
-                                          'puzzle_list_route':
-                                              puzzle_list_route[index]
-                                        });
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => PuzzleGame(
+                                                  puzzleListRoute:
+                                                      puzzle_list_route[index],
+                                                  puzzleList:
+                                                      puzzle_list[index],
+                                                )));
                                   },
                                   //버튼배경투명
                                   style: ElevatedButton.styleFrom(
