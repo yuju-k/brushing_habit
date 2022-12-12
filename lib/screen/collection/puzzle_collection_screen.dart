@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 //퍼즐모음화면
 
@@ -11,51 +13,114 @@ class PuzzleCollectionScreen extends StatefulWidget {
 }
 
 class _PuzzleCollectionScreenState extends State<PuzzleCollectionScreen> {
+  List<String> puzzle_list = [];
+  List<String> puzzle_list_filename = [];
+  List<String> puzzle_list_folder = [];
+  List<String> puzzle_list_route = [];
+
   @override
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([]);
   }
 
+  Future puzzleOriginalList() async {
+    //파이어베이스 초기화
+    var firestore = FirebaseFirestore.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final uid = user!.uid;
+
+    //getItem, uid, puzzleOriginal 가져오기
+    //uid가 존재하지 않으면 print("uid가 존재하지 않습니다.")
+    //uid가 존재하면 puzzleOriginal 가져오기
+    await firestore
+        .collection('getItems')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) async {
+      if (documentSnapshot.exists) {
+        if ((documentSnapshot.data() as Map<String, dynamic>)
+            .containsKey('puzzleOriginal')) {
+          puzzle_list = List.from(documentSnapshot['puzzleOriginal']);
+          puzzle_list.sort(); //내림차순정렬
+
+          //puzzle_original collection에서 puzzle_list와 같은 문서의 file_name 가져오기
+          //puzzle_list_filename에 저장
+          for (int i = 0; i < puzzle_list.length; i++) {
+            await firestore
+                .collection('puzzle_original')
+                .doc(puzzle_list[i])
+                .get()
+                .then((DocumentSnapshot documentSnapshot) {
+              if (documentSnapshot.exists) {
+                puzzle_list_filename.add(documentSnapshot['file_name']);
+                puzzle_list_folder.add(documentSnapshot['folder']);
+                String route = 'assets/puzzles/' +
+                    documentSnapshot['folder'] +
+                    '/' +
+                    documentSnapshot['file_name'];
+                puzzle_list_route.add(route);
+              } else {
+                print('존재하지 않는 문서입니다.');
+              }
+            });
+          }
+        } else {
+          print('획득한 퍼즐이 없습니다.');
+        }
+      } else {
+        print('uid가 존재하지 않습니다.(획득한 퍼즐없음)');
+      }
+      print('puzzle_list_route: $puzzle_list_route');
+      print('puzzle_list_filename: $puzzle_list_filename');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<String> images = [
-      'assets/puzzles/1/original.jpg',
-      'assets/puzzles/2/original.jpg',
-      'assets/puzzles/3/original.jpg',
-      'assets/puzzles/4/original.jpg',
-    ];
-
     return Scaffold(
         appBar: AppBar(
           title: const Text("퍼즐모음"),
         ),
         body: Center(
-            child: GridView.count(
-          mainAxisSpacing: 5,
-          crossAxisSpacing: 5,
-          crossAxisCount: 1,
-          children: List.generate(4, (index) {
-            // For each index in the list of images,
-            // return an Image widget that displays the image at that index
-            return Container(
-                color: Colors.white,
-                child: ElevatedButton(
-                    //투명배경
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.transparent,
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                    ),
-                    onPressed: () {
-                      //PuzzleDetails로 이동
-                      Navigator.pushNamed(
-                        context, '/puzzle_game',
-                        //arguments: images[index]);
-                      );
-                    },
-                    child: Image.asset(images[index])));
-          }),
-        )));
+            child: FutureBuilder(
+                future: puzzleOriginalList(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 1),
+                        itemCount: puzzle_list_filename.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                              child: Column(
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {
+                                    //puzzleGame()화면으로이동
+                                    Navigator.pushNamed(context, '/puzzleGame',
+                                        arguments: {
+                                          'puzzle_list_filename':
+                                              puzzle_list_filename[index],
+                                          'puzzle_list_folder':
+                                              puzzle_list_folder[index],
+                                          'puzzle_list_route':
+                                              puzzle_list_route[index]
+                                        });
+                                  },
+                                  //버튼배경투명
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                      shadowColor: Colors.transparent),
+                                  child: Image.asset(puzzle_list_route[index]))
+                            ],
+                          ));
+                        });
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                })));
   }
 }

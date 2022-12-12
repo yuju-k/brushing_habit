@@ -8,10 +8,9 @@ import 'screen/sign_screen.dart';
 import 'screen/collection/goals_screen.dart';
 import 'screen/collection/movies_collection_screen.dart';
 import 'screen/collection/puzzle_collection_screen.dart';
-import 'screen/brushing/reward_movie_screen.dart';
 import 'screen/brushing/run_brushing_screen.dart';
-import 'screen/collection/puzzle_game.dart';
 import 'screen/brushing/brushing_clear.dart';
+import 'screen/collection/puzzle_game.dart';
 import 'setting.dart';
 
 List<CameraDescription> cameras = [];
@@ -38,9 +37,9 @@ class RunHome extends StatelessWidget {
         '/movie': (context) => const MoviesCollectionScreen(),
         '/goals': (context) => const GoalsScreen(),
         '/run': (context) => const ImageLabelView(),
-        '/puzzle_game': (context) => const PuzzleGame(),
         '/claer': (context) => const ClearBrushing(),
         '/setting': (context) => const SettingScreen(),
+        '/puzzleGame': (context) => const PuzzleGame(),
       },
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
