@@ -215,9 +215,14 @@ class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        _docIds = List.from(documentSnapshot['movie']);
-        _docIds.sort();
-        print(_docIds);
+        if ((documentSnapshot.data() as Map<String, dynamic>)
+            .containsKey('movie')) {
+          _docIds = List.from(documentSnapshot['movie']);
+          _docIds.sort();
+          print(_docIds);
+        } else {
+          print('사용자가 얻은 영상이 없습니다.');
+        }
       } else {
         print('사용자가 얻은 영상이 없습니다.');
       }

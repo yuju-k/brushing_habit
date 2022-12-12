@@ -38,19 +38,25 @@ class _RewardPuzzleState extends State<RewardPuzzle> {
     //없으면 puzzleSlice에 puzzleName 추가
     var doc2 = await firestore.collection('getItems').doc(uid).get();
     if (doc2.exists) {
-      var puzzleSlice = doc2['puzzleSlice'];
-      if (puzzleSlice.contains(puzzleName)) {
-        print('이미 획득한 퍼즐입니다.');
+      //uid가 있으면
+      if ((doc2.data() as Map<String, dynamic>).containsKey('puuzzleSlice')) {
+        var puzzleSlice = doc2['puzzleSlice'];
+        if (puzzleSlice.contains(puzzleName)) {
+          print('이미 획득한 퍼즐입니다.');
+        } else {
+          FirebaseFirestore.instance.collection('getItems').doc(uid).set({
+            'puzzleSlice': FieldValue.arrayUnion([puzzleName])
+          }, SetOptions(merge: true));
+        }
       } else {
-        puzzleSlice.add(puzzleName);
-        await firestore.collection('getItems').doc(uid).update({
-          'puzzleSlice': puzzleSlice,
-        });
+        FirebaseFirestore.instance.collection('getItems').doc(uid).set({
+          'puzzleSlice': FieldValue.arrayUnion([puzzleName])
+        }, SetOptions(merge: true));
       }
     } else {
-      await firestore.collection('getItems').doc(uid).set({
-        'puzzleSlice': [puzzleName],
-      });
+      FirebaseFirestore.instance.collection('getItems').doc(uid).set({
+        'puzzleSlice': FieldValue.arrayUnion([puzzleName])
+      }, SetOptions(merge: true));
     }
 
     //puzzle_slice에서 puzzleName에 해당하는 문서의 필드정보 가져옴
