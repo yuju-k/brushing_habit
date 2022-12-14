@@ -107,7 +107,7 @@ class _PuzzleCollectionScreenState extends State<PuzzleCollectionScreen> {
                                             builder: (context) => PuzzleGame(
                                                   puzzleListRoute:
                                                       puzzle_list_route[index],
-                                                  puzzleList:
+                                                  originalPuzzleList:
                                                       puzzle_list[index],
                                                 )));
                                   },
