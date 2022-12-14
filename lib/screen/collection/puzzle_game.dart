@@ -103,6 +103,10 @@ class _PuzzleGameState extends State<PuzzleGame> {
                 .add((doc.data() as Map<String, dynamic>)['position']);
           }
         }
+        //_isPuzzleSolved[i]를 true로 바꾼다.
+        for (int i = 0; i < _savePuzzleSlice.length; i++) {
+          _isPuzzleSolved[int.parse(_savePuzzleSlice[i].substring(13))] = true;
+        }
       } else {
         print('puzzleSlice 필드가 없습니다.');
       }
@@ -241,9 +245,16 @@ class _PuzzleGameState extends State<PuzzleGame> {
     }, onWillAccept: (data) {
       return data == 'slice$index.png';
     }, onAccept: (data) {
-      print(data);
       setState(() {
+        FirebaseAuth auth = FirebaseAuth.instance;
+        String uid = auth.currentUser!.uid;
+        String saveFileName = 'puzzle$folder-slice$index';
         _isPuzzleSolved[index - 1] = true;
+        //firebase puzzleSlice_save필드에 저장, 필드가 없으면 추가
+        //puzzleSlice_save필드 속성은 array
+        FirebaseFirestore.instance.collection('getItems').doc(uid).set({
+          'puzzleSlice_save': FieldValue.arrayUnion([saveFileName])
+        }, SetOptions(merge: true));
       });
     });
   }
