@@ -34,7 +34,7 @@ class _PuzzleGameState extends State<PuzzleGame> {
   List<String> _slice_fileName = [];
   List<String> _slice_folder = [];
   List<String> _slice_original = [];
-  List<int> _slice_positon = [];
+  List<String> _slice_positon = [];
 
   Future _firebasePuzzleSliceRead() async {
     final FirebaseAuth fb = FirebaseAuth.instance; //파이어베이스 초기화
@@ -87,25 +87,24 @@ class _PuzzleGameState extends State<PuzzleGame> {
         print('_PuzzleSliceList2: $_PuzzleSliceList2');
         //puzzle_slice컬렉션에서 _PuzzleSliceList2 값이 있는지 확인한다.
         for (int i = 0; i < _PuzzleSliceList2.length; i++) {
-          final DocumentSnapshot doc = await FirebaseFirestore.instance
+          await FirebaseFirestore.instance
               .collection('puzzle_slice')
               .doc(_PuzzleSliceList2[i])
-              .get();
-          if (!doc.exists) {
-            print('puzzle_slice에 puzzleSlice가 없습니다.');
-          } else {
-            _slice_fileName
-                .add((doc.data() as Map<String, dynamic>)['file_name']);
-            _slice_folder.add((doc.data() as Map<String, dynamic>)['folder']);
-            _slice_original
-                .add((doc.data() as Map<String, dynamic>)['original']);
-            _slice_positon
-                .add((doc.data() as Map<String, dynamic>)['position']);
-          }
+              .get()
+              .then((DocumentSnapshot doc) {
+            if (!doc.exists) {
+              print('puzzle_slice에 puzzleSlice가 없습니다.');
+            } else {
+              _slice_fileName.add(doc['file_name']);
+              _slice_folder.add(doc['folder']);
+              _slice_positon.add(doc['position']);
+            }
+          });
         }
         //_isPuzzleSolved[i]를 true로 바꾼다.
         for (int i = 0; i < _savePuzzleSlice.length; i++) {
-          _isPuzzleSolved[int.parse(_savePuzzleSlice[i].substring(13))] = true;
+          _isPuzzleSolved[int.parse(_savePuzzleSlice[i].substring(13)) - 1] =
+              true;
         }
       } else {
         print('puzzleSlice 필드가 없습니다.');
@@ -126,6 +125,8 @@ class _PuzzleGameState extends State<PuzzleGame> {
   }
 
   void dispose() {
+    //가로모드 해제
+    SystemChrome.setPreferredOrientations([]);
     //전체화면 해제
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
@@ -264,7 +265,7 @@ class _PuzzleGameState extends State<PuzzleGame> {
     List<Widget> list = <Widget>[];
     for (var i = 0; i < _PuzzleSliceList2.length; i++) {
       list.add(_buildPuzzleSliceImage(
-          _slice_folder[i], _slice_positon[i], _slice_fileName[i]));
+          _slice_folder[i], int.parse(_slice_positon[i]), _slice_fileName[i]));
       list.add(const SizedBox(height: 20));
     }
     return Column(children: [

@@ -103,10 +103,10 @@ class _ImageLabelViewState extends State<ImageLabelView> {
       _customPaint = CustomPaint(painter: painter);
     } else {
       String text = 'Labels found: ${labels.length}\n\n';
-      for (final label in labels) {
-        text += 'Label: ${label.label}, '
-            'Confidence: ${label.confidence.toStringAsFixed(2)}\n\n';
-      }
+      // for (final label in labels) {
+      //   text += 'Label: ${label.label}, '
+      //       'Confidence: ${label.confidence.toStringAsFixed(2)}\n\n';
+      // }
       _text = text;
       _customPaint = null;
     }
