@@ -25,6 +25,12 @@ class _PuzzleCollectionScreenState extends State<PuzzleCollectionScreen> {
     SystemChrome.setPreferredOrientations([]);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    SystemChrome.setPreferredOrientations([]);
+  }
+
   Future puzzleOriginalList() async {
     //파이어베이스 초기화
     var firestore = FirebaseFirestore.instance;

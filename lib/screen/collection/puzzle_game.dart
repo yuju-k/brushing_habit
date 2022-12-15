@@ -34,7 +34,7 @@ class _PuzzleGameState extends State<PuzzleGame> {
   List<String> _slice_fileName = [];
   List<String> _slice_folder = [];
   List<String> _slice_original = [];
-  List<String> _slice_positon = [];
+  List<dynamic> _slice_positon = [];
 
   Future _firebasePuzzleSliceRead() async {
     final FirebaseAuth fb = FirebaseAuth.instance; //파이어베이스 초기화
@@ -124,6 +124,7 @@ class _PuzzleGameState extends State<PuzzleGame> {
     super.initState();
   }
 
+  @override
   void dispose() {
     //가로모드 해제
     SystemChrome.setPreferredOrientations([]);
@@ -265,7 +266,7 @@ class _PuzzleGameState extends State<PuzzleGame> {
     List<Widget> list = <Widget>[];
     for (var i = 0; i < _PuzzleSliceList2.length; i++) {
       list.add(_buildPuzzleSliceImage(
-          _slice_folder[i], int.parse(_slice_positon[i]), _slice_fileName[i]));
+          _slice_folder[i], _slice_positon[i], _slice_fileName[i]));
       list.add(const SizedBox(height: 20));
     }
     return Column(children: [
