@@ -3,22 +3,6 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-const List<String> animationName = [
-  '슈퍼구조대',
-  'Pea Pea World',
-  '코코몽',
-  '뽀로로와 친구들',
-  '꼬마버스 타요',
-];
-
-final List<bool> selectedanimationName = <bool>[
-  true,
-  false,
-  false,
-  false,
-  false
-];
-
 class MoviesCollectionScreen extends StatefulWidget {
   const MoviesCollectionScreen({super.key});
 
@@ -27,12 +11,28 @@ class MoviesCollectionScreen extends StatefulWidget {
 }
 
 class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
+  List<String> animationName = [
+    '슈퍼구조대',
+    'Pea Pea World',
+    '코코몽',
+    '뽀로로와 친구들',
+    '꼬마버스 타요',
+  ];
+
+  final List<bool> selectedanimationName = <bool>[
+    true,
+    false,
+    false,
+    false,
+    false
+  ];
+
   List<String> _docIds = []; //getItems에서 가져온 movie값들을 저장할 리스트
   List<String> _youtubeIds = []; //movies에서 가져온 youtube_id값들을 저장할 리스트
-  List<String> _title = []; //movies에서 가져온 title값들을 저장할 리스트
-  List<String> _seasonNum = []; //movies에서 가져온 season값들을 저장할 리스트
-  List<String> _episodeNum = []; //movies에서 가져온 episode값들을 저장할 리스트
-  int ani_index = 0;
+  final List<String> _title = []; //movies에서 가져온 title값들을 저장할 리스트
+  final List<String> _seasonNum = []; //movies에서 가져온 season값들을 저장할 리스트
+  final List<String> _episodeNum = []; //movies에서 가져온 episode값들을 저장할 리스트
+  int aniIndex = 0;
 
   @override
   void initState() {
@@ -98,8 +98,8 @@ class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
                   for (int i = 0; i < selectedanimationName.length; i++) {
                     selectedanimationName[i] = i == index;
                   }
-                  print('Menu Select :' + animationName[index].toString());
-                  ani_index = index;
+                  //print('Menu Select :' + animationName[index].toString());
+                  aniIndex = index;
                 });
               },
               selectedBorderColor: Colors.blue[700],
@@ -219,12 +219,12 @@ class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
             .containsKey('movie')) {
           _docIds = List.from(documentSnapshot['movie']);
           _docIds.sort();
-          print(_docIds);
+          //print(_docIds);
         } else {
-          print('사용자가 얻은 영상이 없습니다.');
+          //print('사용자가 얻은 영상이 없습니다.');
         }
       } else {
-        print('사용자가 얻은 영상이 없습니다.');
+        //print('사용자가 얻은 영상이 없습니다.');
       }
     });
     //docIds에 저장된 값들을 이용해 영상 정보 가져오기
@@ -235,7 +235,7 @@ class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
           .get()
           .then((DocumentSnapshot documentSnapshot) {
         if (documentSnapshot.exists) {
-          if (documentSnapshot['name'] == animationName[ani_index]) {
+          if (documentSnapshot['name'] == animationName[aniIndex]) {
             //print(_docIds[i] + ': ' + documentSnapshot['youtube_id']);
             _youtubeIds.add(documentSnapshot['youtube_id']);
             _seasonNum.add(documentSnapshot['season']);
@@ -245,6 +245,6 @@ class _MoviesCollectionScreenState extends State<MoviesCollectionScreen> {
         }
       });
     }
-    print(_youtubeIds);
+    //print(_youtubeIds);
   }
 }

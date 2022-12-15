@@ -14,11 +14,11 @@ class RewardMovie extends StatefulWidget {
 
 class _RewardMovieState extends State<RewardMovie> {
   late String randomDocId = widget.randomDocId;
-  late String youtube_url;
-  late String episode_num;
-  late String episode_title;
-  late String season_num;
-  late String animation_title;
+  late String youtubeUrl;
+  late String episodeNum;
+  late String episodeTitle;
+  late String seasonNum;
+  late String animationTitle;
 
   @override
   void initState() {
@@ -44,18 +44,18 @@ class _RewardMovieState extends State<RewardMovie> {
                     child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('[$episode_title] 시즌 $season_num-$episode_num화',
+                    Text('[$episodeTitle] 시즌 $seasonNum-$episodeNum화',
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 5),
                     Text(
-                      animation_title,
+                      animationTitle,
                       style: const TextStyle(fontSize: 25),
                     ),
                     const SizedBox(height: 5),
                     YoutubePlayer(
                       controller: YoutubePlayerController(
-                        initialVideoId: youtube_url, // 유튜브 영상 ID
+                        initialVideoId: youtubeUrl, // 유튜브 영상 ID
                         flags: const YoutubePlayerFlags(
                           autoPlay: false, // 자동 재생
                           mute: false, // 소리 켜기
@@ -69,7 +69,7 @@ class _RewardMovieState extends State<RewardMovie> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => RewardPuzzle()));
+                                  builder: (context) => const RewardPuzzle()));
                         },
                         child: const Text('SKIP'))
                   ],
@@ -85,10 +85,10 @@ class _RewardMovieState extends State<RewardMovie> {
   Future getRewardMovie() async {
     var firestore = FirebaseFirestore.instance;
     var doc = await firestore.collection('movies').doc(randomDocId).get();
-    episode_title = doc['name']; //영상제목 (슈퍼구조대, 뽀로로와 친구들...)
-    youtube_url = doc['youtube_id']; //유튜브 동영상 아이디
-    season_num = doc['season']; //시즌(1,2,3...)
-    episode_num = doc['episode']; //에피소드(1,2,3...)
-    animation_title = doc['title']; //에피소드 타이틀
+    episodeTitle = doc['name']; //영상제목 (슈퍼구조대, 뽀로로와 친구들...)
+    youtubeUrl = doc['youtube_id']; //유튜브 동영상 아이디
+    seasonNum = doc['season']; //시즌(1,2,3...)
+    episodeNum = doc['episode']; //에피소드(1,2,3...)
+    animationTitle = doc['title']; //에피소드 타이틀
   }
 }

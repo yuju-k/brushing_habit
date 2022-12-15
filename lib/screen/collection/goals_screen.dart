@@ -78,7 +78,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    DateTime todayDate = DateTime(now.year, now.month, now.day, 0, 0, 0, 0);
+    //DateTime todayDate = DateTime(now.year, now.month, now.day, 0, 0, 0, 0);
 
     return Scaffold(
         appBar: AppBar(
@@ -181,13 +181,13 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   Text(
                     '$clearDayDate3 \n 양치질 횟수 : $count회',
                     style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 17,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ]);
               }),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           ElevatedButton(
               onPressed: () {
                 // 초기화면으로 이동
