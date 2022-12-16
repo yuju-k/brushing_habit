@@ -53,6 +53,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
   double zoomLevel = 0.0, minZoomLevel = 0.0, maxZoomLevel = 0.0;
   final bool _allowPicker = true;
   bool _changingCameraLens = false;
+  bool nextButtonVisible = false;
 
   @override
   void initState() {
@@ -133,13 +134,7 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
 
     // _goodLevel이 120이 되면 3초 뒤에 ClearBrushing() 화면으로 넘어감
     if (goodLevel / 120 == 1) {
-      Future.delayed(const Duration(seconds: 3), () {
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ClearBrushing()),
-        );
-      });
+      nextButtonVisible = true;
     }
 
     if (_controller?.value.isInitialized == false) {
@@ -188,19 +183,45 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
             alignment: Alignment.topCenter + const Alignment(0, 0.2),
             child: _processGood_2(),
           ),
-          Align(
-              alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ClearBrushing()),
-                  );
-                },
-                child: const Text('Clear Brushing'),
-              ))
+          Visibility(
+              visible: nextButtonVisible,
+              child: Align(
+                alignment: Alignment.topCenter + const Alignment(0, 0.5),
+                child: const Text(
+                  '양치질이 끝났습니다.\n잘했어요!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              )),
+          Visibility(
+              //goodLevel표시 프로세스바3
+              visible: nextButtonVisible,
+              child: Align(
+                  alignment: Alignment.topCenter + const Alignment(0, 0.3),
+                  child: ElevatedButton(
+                    //핑크색
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: const Color.fromARGB(255, 197, 24, 82),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ClearBrushing()),
+                      );
+                    },
+                    child: const Text('양치질 완료',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                  )))
         ],
       ),
     );

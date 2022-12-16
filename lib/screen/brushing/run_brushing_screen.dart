@@ -73,7 +73,7 @@ class _ImageLabelViewState extends State<ImageLabelView> {
     for (final label in labels) {
       if (label.label == 'good') {
         _goodCount += 1;
-        _goodLevel = _goodCount ~/ 5;
+        _goodLevel = _goodCount ~/ 30;
         _goodCount2 += 1;
         if (_goodCount2 == 11) _goodCount2 = 0;
         _badCount = 0;
@@ -81,7 +81,7 @@ class _ImageLabelViewState extends State<ImageLabelView> {
         //print('good: $_goodLevel');
       } else if (label.label == 'bad') {
         _badCount += 1;
-        _badLevel = _badCount ~/ 5;
+        _badLevel = _badCount ~/ 30;
         _status = 'bad';
         //print('bad: $_badLevel');
       }
@@ -103,10 +103,10 @@ class _ImageLabelViewState extends State<ImageLabelView> {
       _customPaint = CustomPaint(painter: painter);
     } else {
       String text = 'Labels found: ${labels.length}\n\n';
-      // for (final label in labels) {
-      //   text += 'Label: ${label.label}, '
-      //       'Confidence: ${label.confidence.toStringAsFixed(2)}\n\n';
-      // }
+      for (final label in labels) {
+        text += 'Label: ${label.label}, '
+            'Confidence: ${label.confidence.toStringAsFixed(2)}\n\n';
+      }
       _text = text;
       _customPaint = null;
     }
