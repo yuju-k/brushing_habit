@@ -161,8 +161,8 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
                   : CameraPreview(_controller!),
             ),
           ),
-          if (widget.customPaint != null)
-            widget.customPaint!, //Label, Confidence표시
+          // if (widget.customPaint != null)
+          //   widget.customPaint!, //Label, Confidence표시
           if (status == 'good' && goodLevel <= 20)
             _goodBackground20(), //good일때 배경
           if (status == 'good' && goodLevel > 20 && goodLevel <= 50)
@@ -175,12 +175,12 @@ class _CameraViewState extends State<CameraView> with TickerProviderStateMixin {
           ),
           Align(
             //goodLevel표시 프로세스바
-            alignment: Alignment.topCenter + const Alignment(0, 0.1),
+            alignment: Alignment.topCenter + const Alignment(0, 0.05),
             child: _processGood(),
           ),
           Align(
             //goodLevel표시 프로세스바2
-            alignment: Alignment.topCenter + const Alignment(0, 0.2),
+            alignment: Alignment.topCenter + const Alignment(0, 0.15),
             child: _processGood_2(),
           ),
           Visibility(
