@@ -73,7 +73,7 @@ class _ImageLabelViewState extends State<ImageLabelView> {
     for (final label in labels) {
       if (label.label == 'good') {
         _goodCount += 1;
-        _goodLevel = _goodCount ~/ 30;
+        _goodLevel = _goodCount ~/ 15;
         _goodCount2 += 1;
         if (_goodCount2 == 11) _goodCount2 = 0;
         _badCount = 0;
@@ -81,7 +81,7 @@ class _ImageLabelViewState extends State<ImageLabelView> {
         //print('good: $_goodLevel');
       } else if (label.label == 'bad') {
         _badCount += 1;
-        _badLevel = _badCount ~/ 30;
+        _badLevel = _badCount ~/ 15;
         _status = 'bad';
         //print('bad: $_badLevel');
       }
